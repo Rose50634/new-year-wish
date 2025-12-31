@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元旦快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+            position: relative;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        /* 动态背景渐变 */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 背景装饰 */
+        .background-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0.8;
+            animation: confetti-fall linear infinite;
+        }
+        
+        .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: firework-explode 2s ease-out infinite;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: star-twinkle 3s ease-in-out infinite;
+        }
+        
+        .container {
+            text-align: center;
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        h1 {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: bounce 2s infinite, textGlow 3s ease-in-out infinite alternate;
+            cursor: pointer;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+        }
+        
+        h1:hover {
+            transform: scale(1.1) rotate(5deg);
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        
+        .name {
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.7);
+            animation: nameGlow 2s infinite alternate, bounce 2s infinite 0.5s;
+        }
+        
+        .wishes {
+            font-size: 1.8rem;
+            margin: 30px 0;
+            line-height: 2.2;
+            opacity: 0;
+        }
+        
+        .wishes p {
+            margin: 15px 0;
+            opacity: 0;
+            animation: wishFadeIn 1s ease-in-out forwards;
+        }
+        
+        .decorations {
+            font-size: 4rem;
+            margin: 30px 0;
+            animation: twinkle 1s infinite alternate, float 3s ease-in-out infinite;
+        }
+        
+        /* 倒计时样式 */
+        .countdown {
+            font-size: 3rem;
+            margin: 20px 0;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: pulse 1s infinite;
+        }
+        
+        /* 个性化祝福输入 */
+        .personalized-wish {
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .personalized-wish input {
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 400px;
+        }
+        
+        .personalized-wish input:focus {
+            outline: none;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 音量控制 */
+        .volume-control {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .volume-control input {
+            width: 100px;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 107, 107, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 107, 107, 0.8);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 雪花效果 */
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        
+        /* 动画定义 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+        
+        @keyframes twinkle {
+            from { opacity: 0.5; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1.1); }
+        }
+        
+        @keyframes fall {
+            from { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; }
+            to { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
+        }
+        
+        @keyframes nameGlow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.7); }
+            to { text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.5); }
+        }
+        
+        @keyframes textGlow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.5); }
+            to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+        
+        @keyframes wishFadeIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes firework-explode {
+            0% { opacity: 1; transform: scale(0); }
+            50% { opacity: 1; transform: scale(20); }
+            100% { opacity: 0; transform: scale(30); }
+        }
+        
+        @keyframes star-twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .wishes {
+                font-size: 1.3rem;
+            }
+            
+            .decorations {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 12px 24px;
+                font-size: 1rem;
+                margin: 8px;
+            }
+            
+            .countdown {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decoration"></div>
+    
+    <div class="container">
+        <h1 onclick="playSound()">🎉 元旦快乐！🎉</h1>
+        <div class="decorations">🎊🎈🎁🎈🎊</div>
+        
+        <div class="countdown" id="countdown">2026</div>
+        
+        <div class="wishes" id="wishes">
+            <p>新的一年，新的开始！</p>
+            <p>祝<span class="name">张灵芝</span>在2026年里：</p>
+            <p>身体健康，万事如意！</p>
+            <p>事业有成，家庭幸福！</p>
+            <p>心想事成，美梦成真！</p>
+        </div>
+        
+        <div class="personalized-wish">
+            <input type="text" id="customWish" placeholder="输入你的个性化祝福...">
+            <button class="btn" onclick="addCustomWish()"><span>添加祝福</span></button>
+        </div>
+        
+        <div class="decorations">🎊🎈🎁🎈🎊</div>
+        
+        <div style="margin-top: 40px;">
+            <button class="btn" onclick="playSound()"><span>播放祝福</span></button>
+            <button class="btn" onclick="toggleSnow()"><span>雪花开关</span></button>
+            <button class="btn" onclick="addConfetti()"><span>庆祝效果</span></button>
+            <button class="btn" onclick="toggleMusic()"><span>🎵 音乐开关</span></button>
+        </div>
+        
+        <div class="volume-control">
+            <span>🔊</span>
+            <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5">
+            <span>🔇</span>
+        </div>
+    </div>
+    
+    <!-- 音频元素 -->
+    <audio id="celebration-sound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto" loop>
+        您的浏览器不支持音频元素。
+    </audio>
+    
+    <script>
+        // 全局变量
+        let snowEnabled = true;
+        let snowflakes = [];
+        let musicEnabled = true;
+        let fireworksInterval;
+        
+        // 创建雪花效果
+        function createSnowflakes() {
+            if (!snowEnabled) return;
+            
+            const body = document.body;
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            // 随机大小
+            const size = Math.random() * 15 + 5;
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            
+            // 随机位置
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            
+            // 随机下落速度
+            const duration = Math.random() * 15 + 10;
+            snowflake.style.animationDuration = `${duration}s`;
+            
+            // 随机延迟
+            snowflake.style.animationDelay = `${Math.random() * 5}s`;
+            
+            body.appendChild(snowflake);
+            snowflakes.push(snowflake);
+            
+            // 雪花消失后移除
+            setTimeout(() => {
+                if (snowflake.parentNode) {
+                    snowflake.parentNode.removeChild(snowflake);
+                    snowflakes = snowflakes.filter(s => s !== snowflake);
+                }
+            }, duration * 1000);
+        }
+        
+        // 创建彩色纸屑效果
+        function addConfetti() {
+            const background = document.querySelector('.background-decoration');
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#ffd700', '#ff69b4', '#8a2be2', '#00f2fe', '#4facfe'];
+            
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // 随机颜色
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // 随机大小
+                    const size = Math.random() * 12 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    // 随机位置
+                    confetti.style.left = `${Math.random() * 100}vw`;
+                    
+                    // 随机下落速度和角度
+                    const duration = Math.random() * 5 + 3;
+                    const angle = Math.random() * 360;
+                    confetti.style.animationDuration = `${duration}s`;
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+                    confetti.style.transform = `rotate(${angle}deg)`;
+                    
+                    background.appendChild(confetti);
+                    
+                    // 一段时间后移除
+                    setTimeout(() => {
+                        if (confetti.parentNode) {
+                            confetti.parentNode.removeChild(confetti);
+                        }
+                    }, duration * 1000);
+                }, i * 30);
+            }
+            
+            // 添加烟花效果
+            setTimeout(() => {
+                createFireworks(10);
+            }, 1000);
+        }
+        
+        // 创建烟花效果
+        function createFireworks(count) {
+            const background = document.querySelector('.background-decoration');
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd700', '#ff69b4', '#8a2be2', '#00f2fe', '#4facfe'];
+            
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.classList.add('firework');
+                    
+                    // 随机颜色
+                    firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // 随机位置
+                    firework.style.left = `${Math.random() * 100}vw`;
+                    firework.style.top = `${Math.random() * 60}vh`;
+                    
+                    // 随机大小和延迟
+                    const size = Math.random() * 30 + 20;
+                    firework.style.animationDelay = `${Math.random() * 2}s`;
+                    
+                    background.appendChild(firework);
+                    
+                    // 一段时间后移除
+                    setTimeout(() => {
+                        if (firework.parentNode) {
+                            firework.parentNode.removeChild(firework);
+                        }
+                    }, 2000);
+                }, i * 500);
+            }
+        }
+        
+        // 创建星星背景
+        function createStars() {
+            const background = document.querySelector('.background-decoration');
+            
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('stars');
+                
+                // 随机位置
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                
+                // 随机大小和延迟
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                star.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                
+                background.appendChild(star);
+            }
+        }
+        
+        // 播放音效
+        function playSound() {
+            const audio = document.getElementById('celebration-sound');
+            if (musicEnabled) {
+                audio.currentTime = 0;
+                audio.play().catch(error => {
+                    console.log('音频播放失败:', error);
+                    alert('点击任意位置授权音频播放！');
+                });
+            }
+            addConfetti();
+        }
+        
+        // 切换雪花效果
+        function toggleSnow() {
+            snowEnabled = !snowEnabled;
+            const btn = event.target;
+            btn.innerHTML = snowEnabled ? '<span>雪花开关</span>' : '<span>开启雪花</span>';
+            
+            if (!snowEnabled) {
+                // 清除所有雪花
+                snowflakes.forEach(snowflake => {
+                    if (snowflake.parentNode) {
+                        snowflake.parentNode.removeChild(snowflake);
+                    }
+                });
+                snowflakes = [];
+            }
+        }
+        
+        // 切换音乐
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const btn = event.target;
+            const audio = document.getElementById('celebration-sound');
+            
+            if (musicEnabled) {
+                btn.innerHTML = '<span>🎵 音乐开关</span>';
+                audio.play().catch(() => {});
+            } else {
+                btn.innerHTML = '<span>🔇 音乐开关</span>';
+                audio.pause();
+            }
+        }
+        
+        // 添加个性化祝福
+        function addCustomWish() {
+            const input = document.getElementById('customWish');
+            const wishText = input.value.trim();
+            
+            if (wishText) {
+                const wishesContainer = document.getElementById('wishes');
+                const newWish = document.createElement('p');
+                newWish.textContent = wishText;
+                newWish.style.animation = 'wishFadeIn 1s ease-in-out forwards';
+                newWish.style.opacity = '0';
+                wishesContainer.appendChild(newWish);
+                input.value = '';
+                
+                // 添加庆祝效果
+                addConfetti();
+            }
+        }
+        
+        // 新年倒计时
+        function updateCountdown() {
+            const now = new Date();
+            const newYear = new Date(2026, 0, 1);
+            const diff = newYear - now;
+            
+            if (diff <= 0) {
+                document.getElementById('countdown').textContent = '🎉 2026年！';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        
+        // 逐字显示祝福语
+        function typeWriter() {
+            const wishes = document.querySelectorAll('.wishes p');
+            wishes.forEach((wish, index) => {
+                wish.style.animationDelay = `${index * 0.5}s`;
+            });
+            document.getElementById('wishes').style.opacity = '1';
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            // 创建星星背景
+            createStars();
+            
+            // 定时创建雪花
+            setInterval(createSnowflakes, 200);
+            
+            // 定时创建烟花
+            fireworksInterval = setInterval(() => {
+                createFireworks(3);
+            }, 5000);
+            
+            // 更新倒计时
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // 逐字显示祝福语
+            setTimeout(typeWriter, 1000);
+            
+            // 自动播放一次庆祝效果
+            setTimeout(addConfetti, 2000);
+            
+            // 音量控制
+            const volumeSlider = document.getElementById('volume');
+            const audio = document.getElementById('celebration-sound');
+            
+            volumeSlider.addEventListener('input', () => {
+                audio.volume = volumeSlider.value;
+            });
+            
+            // 回车键添加个性化祝福
+            document.getElementById('customWish').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addCustomWish();
+                }
+            });
+        });
+        
+        // 点击页面任意位置播放音效
+        document.addEventListener('click', () => {
+            const audio = document.getElementById('celebration-sound');
+            if (musicEnabled && audio.paused) {
+                audio.play().catch(() => {});
+            }
+        });
+        
+        // 鼠标移动时创建小的雪花效果
+        document.addEventListener('mousemove', (e) => {
+            if (!snowEnabled) return;
+            
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.style.width = '3px';
+            snowflake.style.height = '3px';
+            snowflake.style.left = `${e.clientX}px`;
+            snowflake.style.top = `${e.clientY}px`;
+            snowflake.style.animationDuration = '2s';
+            snowflake.style.opacity = '0.6';
+            
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                if (snowflake.parentNode) {
+                    snowflake.parentNode.removeChild(snowflake);
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
